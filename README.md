@@ -119,3 +119,11 @@
     kubernetesVersion: v1.18.1
     ......
     imageRepository: gcr.yyy.com/google-containers
+
+更多文章请关注我们的微信公众号：
+
+![微信公众号](https://github.com/findsec-cn/registry-proxy/raw/master/imgs/wechat.jpg)
+
+也可以加入 Kubernetes 技术实战群一起交流学习：
+
+![QQ群](https://github.com/findsec-cn/registry-proxy/raw/master/imgs/qq.jpg)
