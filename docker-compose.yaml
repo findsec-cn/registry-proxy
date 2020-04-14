@@ -1,0 +1,66 @@
+version: '2'
+services:
+  local:
+    container_name: reg-local
+    image: findsec/registry-proxy:latest
+    restart: always
+    environment:
+      - DELETE_ENABLED=true
+    volumes:
+      - ~/data/registry:/var/lib/registry
+    ports:
+      - 5000:5000
+    networks:
+      - registry-net
+  gcr:
+    container_name: reg-gcr
+    image: findsec/registry-proxy:latest
+    restart: always
+    environment:
+      - PROXY_REMOTE_URL=https://gcr.io
+    volumes:
+      - ~/data/registry:/var/lib/registry
+    networks:
+      - registry-net
+  k8s-gcr:
+    container_name: reg-k8s-gcr
+    image: findsec/registry-proxy:latest
+    restart: always
+    environment:
+      - PROXY_REMOTE_URL=https://k8s.gcr.io
+    volumes:
+      - ~/data/registry:/var/lib/registry
+    networks:
+      - registry-net
+  ui:
+    container_name: reg-ui
+    image: findsec/registry-ui:latest
+    restart: always
+    links:
+      - local:reg-local
+    environment:
+      - REGISTRY_TITLE=My Private Docker Registry
+      - REGISTRY_URL=http://reg-local:5000
+      - DELETE_IMAGES=true
+    networks:
+      - registry-net
+  nginx:
+    container_name: reg-nginx
+    image: nginx:alpine
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    links:
+      - ui:reg-ui
+      - gcr:reg-gcr
+      - k8s-gcr:reg-k8s-gcr
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./cert:/etc/nginx/ssl
+    networks:
+      - registry-net
+
+networks:
+  registry-net:
+
