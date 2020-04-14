@@ -98,7 +98,7 @@
 
 可以如下通过镜像仓库代理下载：
 
-    $ docker pull gcr.yyy.com/pause:3.1
+    $ docker pull gcr.yyy.com/google-containers/pause:3.1
 
 比如我们要下载镜像：
 
