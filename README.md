@@ -124,6 +124,6 @@
 
 ![微信公众号](https://github.com/findsec-cn/registry-proxy/raw/master/imgs/wechat.jpg)
 
-也可以加入 Kubernetes 技术实战群一起交流学习：
+也可以加入 Kubernetes 技术实战 QQ 群一起交流学习：
 
 ![QQ群](https://github.com/findsec-cn/registry-proxy/raw/master/imgs/qq.jpg)
