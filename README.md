@@ -1,4 +1,4 @@
-# 搭建 Docker 镜像仓库代理站点
+# 搭建 Docker 镜像仓库代理
 
 在使用 Kubernetes 时，我们需要经常访问 gcr.io 镜像仓库，由于众所周知的原因，gcr.io 在中国无法访问。gcr.azk8s.cn 是 gcr.io 镜像仓库的代理站点，原来可以通过 gcr.azk8s.cn 访问 gcr.io 仓库里的镜像，但是目前 *.azk8s.cn 已经仅限于 Azure 中国的 IP 使用，不再对外提供服务了。为了能够顺利访问 gcr.io 镜像仓库，我们需要在墙外自己搭建一个类似于 gcr.azk8s.cn 镜像仓库代理站点。
 
@@ -33,7 +33,7 @@
           "max-file": "3"
         },
       "insecure-registry": [
-        "hub.xxx.com"
+        "hub.yyy.com"
       ],
       "registry-mirror": "https://q00c7e05.mirror.aliyuncs.com",
       "data-root": "/data/docker",
@@ -57,7 +57,7 @@
     $ docker-compose --version
     docker-compose version 1.25.4, build 1110ad01
 
-## 镜像仓库代理站点
+## 启动镜像仓库代理
 
 ### 启动前准备
 
@@ -72,9 +72,9 @@
 
     $ sed -i 's/xxx.com/yyy.com/g' nginx.conf
 
-### 启动镜像仓库代理站点
+### 启动镜像仓库代理
 
-启动镜像仓库代理站点：
+启动镜像仓库代理：
 
     $ docker-compose up -d
 
@@ -88,15 +88,15 @@
 
 我们可以通过 http://hub.yyy.com 查看镜像仓库缓存的镜像；可以通过gcr.yyy.com下载镜像。
 
-## 使用镜像仓库代理站点
+## 使用镜像仓库代理
 
-我们只需要**将 k8s.gcr.io 替换成 gcr.yyy.com/google-containers**；**将 gcr.io 替换成 gcr.yyy.com** 就可以下载 gcr.io 仓库里的镜像了。
+**我们只需要将 k8s.gcr.io 替换成 gcr.yyy.com/google-containers；将 gcr.io 替换成 gcr.yyy.com 就可以下载 gcr.io 仓库里的镜像了。**
 
 比如我们要下载镜像：
 
     $ docker pull k8s.gcr.io/pause:3.1
 
-可以如下通过镜像仓库代理站点下载：
+可以如下通过镜像仓库代理下载：
 
     $ docker pull gcr.yyy.com/pause:3.1
 
@@ -105,7 +105,7 @@
     $ gcr.io/kubernetes-helm/tiller:v2.16.3
     $ gcr.io/google-containers/etcd:3.2.24
 
-可以如下通过镜像仓库代理站点下载：
+可以如下通过镜像仓库代理下载：
 
     $ gcr.yyy.com/kubernetes-helm/tiller:v2.16.3
     $ gcr.yyy.com/google-containers/etcd:3.2.24
